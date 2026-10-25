@@ -25,7 +25,6 @@ export default function Customers() {
 
   return (
     <div className='customers-list'>
-      <a href={`/`}>Home</a>
       <Center>
         <Container>
           <Table highlightOnHover>

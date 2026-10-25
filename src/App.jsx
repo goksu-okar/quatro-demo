@@ -4,6 +4,7 @@ import {
  import { MantineProvider } from "@mantine/core";
 
  import PrivateRoute from "./utils/PrivateRoute";
+ import AppLayout from "./components/AppLayout";
  import Home from "./routes/home";
  import Login from "./routes/Login";
  import Orders from "./routes/Orders";
@@ -19,10 +20,12 @@ import {
           <Routes>
             <Route element={<PrivateRoute />}>
               <Route element={<Home />} path="/" exact/>
-              <Route element={<Orders />} path="/orders" exact/>
-              <Route element={<OrderPage />} path="/order" />
-              <Route element={<Customers />} path="/customers" />
-              <Route element={<CustomerPage />} path="/customer/edit" />
+              <Route element={<AppLayout />}>
+                <Route element={<Orders />} path="/orders" exact/>
+                <Route element={<OrderPage />} path="/order" />
+                <Route element={<Customers />} path="/customers" />
+                <Route element={<CustomerPage />} path="/customer/edit" />
+              </Route>
             </Route>
             <Route element={<Login />} path="/login"/>
           </Routes>

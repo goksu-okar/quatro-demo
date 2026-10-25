@@ -37,7 +37,7 @@ a {
   display: flex;
 }
 
-.orders-header {
+.app-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -49,7 +49,7 @@ a {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
 
-.orders-header-home {
+.app-header-home {
   text-decoration: none;
   background: none;
   border: none;
@@ -62,8 +62,22 @@ a {
   transition: color 0.15s ease;
 }
 
-.orders-header-home:hover {
+.app-header-home:hover {
   color: var(--quatro-accent);
+}
+
+.search-result-row {
+  display: block;
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: #1a1a1a;
+  transition: background-color 0.1s ease;
+}
+
+.search-result-row:hover {
+  background-color: #f1eefc;
 }
 
 .orders-sidenav {
