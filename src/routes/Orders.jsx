@@ -7,7 +7,6 @@ import {
   Pagination,
   TextInput,
   Button,
-  Group,
   Center,
   Flex,
   Tabs
@@ -60,45 +59,45 @@ export default function Orders() {
   }
 
   return (
-    <Container size="xl" mt="20px">
-      <Group justify="space-between" mt={10}>
-        <a id='orders-h-btn' href={`/`}>Home</a>
-        <Group>
-          <form onSubmit={handleSearch} className='search-form'>
-            <TextInput placeholder="search order" ref={searchRef} w="160px"/>
-            <Button color="dark" type="submit">
-              submit
-            </Button>
-          </form>
-        </Group>
-      </Group>
-      <Flex gap="xl" align="flex-start" mt="md">
-        <Tabs value={type} onChange={orderTypeChange} orientation="vertical" color="dark">
-          <Tabs.List>
-            <Tabs.Tab value="all">All</Tabs.Tab>
-            <Tabs.Tab value="surf">Surf</Tabs.Tab>
-            <Tabs.Tab value="windsurf">Windsurf</Tabs.Tab>
-            <Tabs.Tab value="foil">Foil</Tabs.Tab>
-            <Tabs.Tab value="tow">Tow</Tabs.Tab>
-            <Tabs.Tab value="retail">Retail</Tabs.Tab>
-            <Tabs.Tab value="team">Team</Tabs.Tab>
-            <Tabs.Tab value="wholesale">Whole Sale</Tabs.Tab>
-          </Tabs.List>
-        </Tabs>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <OrdersTable orders={display} activePage={activePage} />
-          <Center mt="md">
-            <Pagination
-              page={activePage}
-              onChange={setPage}
-              total={Math.ceil(numOfPages / 30)}
-              color="gray"
-              size="sm"
-              radius="xs"
-            />
-          </Center>
-        </div>
-      </Flex>
-    </Container>
+    <>
+      <header className="orders-header">
+        <a className="orders-header-home" href={`/`}>HOME</a>
+        <form onSubmit={handleSearch} className='search-form'>
+          <TextInput placeholder="search order" ref={searchRef} w="200px" radius="md"/>
+          <Button color="violet" radius="md" type="submit" ml="xs">
+            Search
+          </Button>
+        </form>
+      </header>
+      <Container size="xl" mt="xl">
+        <Flex gap="xl" align="flex-start">
+          <Tabs value={type} onChange={orderTypeChange} orientation="vertical" variant="pills" color="violet" className="orders-sidenav">
+            <Tabs.List>
+              <Tabs.Tab value="all">All</Tabs.Tab>
+              <Tabs.Tab value="surf">Surf</Tabs.Tab>
+              <Tabs.Tab value="windsurf">Windsurf</Tabs.Tab>
+              <Tabs.Tab value="foil">Foil</Tabs.Tab>
+              <Tabs.Tab value="tow">Tow</Tabs.Tab>
+              <Tabs.Tab value="retail">Retail</Tabs.Tab>
+              <Tabs.Tab value="team">Team</Tabs.Tab>
+              <Tabs.Tab value="wholesale">Whole Sale</Tabs.Tab>
+            </Tabs.List>
+          </Tabs>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <OrdersTable orders={display} activePage={activePage} />
+            <Center mt="md">
+              <Pagination
+                page={activePage}
+                onChange={setPage}
+                total={Math.ceil(numOfPages / 30)}
+                color="violet"
+                size="sm"
+                radius="xs"
+              />
+            </Center>
+          </div>
+        </Flex>
+      </Container>
+    </>
   );
 }
