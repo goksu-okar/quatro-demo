@@ -23,9 +23,8 @@ import d12 from '../pictures/d12.jpg'
 import d13 from '../pictures/d13.jpg'
 import d14 from '../pictures/d14.jpg'
 import d16 from '../pictures/d16.jpg'
-// @ts-ignore Workaround for bug on react-background-slider 
-const Slider = BackgroundSlider['react-background-slider'].default;
 
+const Slider = BackgroundSlider.default ?? BackgroundSlider;
 
 export default function Home() {
   const [customers, setCustomers] = useState([]);

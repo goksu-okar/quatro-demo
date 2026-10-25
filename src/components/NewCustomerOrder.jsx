@@ -20,7 +20,6 @@ import {
   Text,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { Carousel } from '@mantine/carousel';
 // import { OrderPDF } from '../components/OrderPDF.jsx';
 import SurfSpecs from './boardSpecs/SurfSpecs.jsx';
 import FoilSpecs from './boardSpecs/FoilSpecs.jsx';
