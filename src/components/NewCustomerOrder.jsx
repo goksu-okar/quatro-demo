@@ -264,10 +264,12 @@ export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer
                   withAsterisk
                   {...form.getInputProps('intro')}
                 >
-                  <Radio size='sm' value='walk in' label='walk in'/>
-                  <Radio size='sm' value='phone' label='phone'/>
-                  <Radio size='sm' value='email' label='email'/>
-                  <Radio size='sm' value='website' label='website'/>
+                  <Group gap="xs">
+                    <Radio size='sm' value='walk in' label='walk in'/>
+                    <Radio size='sm' value='phone' label='phone'/>
+                    <Radio size='sm' value='email' label='email'/>
+                    <Radio size='sm' value='website' label='website'/>
+                  </Group>
                 </Radio.Group>
                 <Group>
                   <TextInput 
@@ -288,10 +290,12 @@ export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer
                   onChange={() => console.log('change')}
                   {...form.getInputProps('orderType')}
                 >
-                  <Radio size='sm' value='surf' label='Surf'/>
-                  <Radio size='sm' value='windsurf' label='Windsurf'/>
-                  <Radio size='sm' value='foil' label='Foil'/>
-                  <Radio size='sm' value='tow' label='Tow'/>
+                  <Group gap="xs">
+                    <Radio size='sm' value='surf' label='Surf'/>
+                    <Radio size='sm' value='windsurf' label='Windsurf'/>
+                    <Radio size='sm' value='foil' label='Foil'/>
+                    <Radio size='sm' value='tow' label='Tow'/>
+                  </Group>
                 </Radio.Group>
                 <Radio.Group
                   name='customer type'
@@ -300,10 +304,12 @@ export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer
                   withAsterisk
                   {...form.getInputProps('customerType')}
                 >
-                  <Radio size='sm' value='retail' label='Retail'/>
-                  <Radio size='sm' value='team' label='Team'/>
-                  {/* <Radio size='sm' value='gratis' label='Gratis'/> */}
-                  <Radio size='sm' value='wholesale' label='Wholesale'/>
+                  <Group gap="xs">
+                    <Radio size='sm' value='retail' label='Retail'/>
+                    <Radio size='sm' value='team' label='Team'/>
+                    {/* <Radio size='sm' value='gratis' label='Gratis'/> */}
+                    <Radio size='sm' value='wholesale' label='Wholesale'/>
+                  </Group>
                 </Radio.Group>
 
                 <Select

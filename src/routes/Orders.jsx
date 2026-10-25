@@ -63,15 +63,17 @@ export default function Orders() {
     <Container mt="20px">
       <a id='orders-h-btn' href={`/`}>Home</a>
       <Group position="apart" mt={10}>
-        <Radio.Group value={type} onChange={orderTypeChange} spacing="xs">
-          <Radio value="all" label="All" />
-          <Radio value="surf" label="Surf" />
-          <Radio value="windsurf" label="Windsurf" />
-          <Radio value="foil" label="Foil" />
-          <Radio value="tow" label="Tow" />
-          <Radio value="retail" label="Retail" />
-          <Radio value="team" label="Team" />
-          <Radio value="wholesale" label="Whole Sale" />
+        <Radio.Group value={type} onChange={orderTypeChange}>
+          <Group gap="xs">
+            <Radio value="all" label="All" />
+            <Radio value="surf" label="Surf" />
+            <Radio value="windsurf" label="Windsurf" />
+            <Radio value="foil" label="Foil" />
+            <Radio value="tow" label="Tow" />
+            <Radio value="retail" label="Retail" />
+            <Radio value="team" label="Team" />
+            <Radio value="wholesale" label="Whole Sale" />
+          </Group>
         </Radio.Group>
         <Group>
           <form onSubmit={handleSearch} className='search-form'>

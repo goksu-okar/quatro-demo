@@ -224,18 +224,22 @@ export default function FoilSpecs({ form }) {
           // orientation='vertical'
           {...form.getInputProps("leash")}
         >
-          <Radio size="sm" value="Deck" label="Deck" />
-          <Radio size="sm" value="Bottom" label="Bottom" />
-          <Radio size="sm" value="No" label="No" />
+          <Group gap="xs">
+            <Radio size="sm" value="Deck" label="Deck" />
+            <Radio size="sm" value="Bottom" label="Bottom" />
+            <Radio size="sm" value="No" label="No" />
+          </Group>
         </Radio.Group>
         <Radio.Group
           name="Handle"
           label="Handle:"
           {...form.getInputProps("handle")}
         >
-          <Radio size="sm" value="Deck" label="Deck" />
-          <Radio size="sm" value="Bottom" label="Bottom" />
-          <Radio size="sm" value="No" label="No" />
+          <Group gap="xs">
+            <Radio size="sm" value="Deck" label="Deck" />
+            <Radio size="sm" value="Bottom" label="Bottom" />
+            <Radio size="sm" value="No" label="No" />
+          </Group>
         </Radio.Group>
       </Group>
       <Flex mt={12} justify='space-between' align='center'>
@@ -244,9 +248,11 @@ export default function FoilSpecs({ form }) {
           label="Shop Flow:"
           {...form.getInputProps("priority")}
         >
-          <Radio size="sm" value="Red" label="Red" />
-          <Radio size="sm" value="Green" label="Green" />
-          <Radio size="sm" value="Yellow" label="Yellow" />
+          <Group gap="xs">
+            <Radio size="sm" value="Red" label="Red" />
+            <Radio size="sm" value="Green" label="Green" />
+            <Radio size="sm" value="Yellow" label="Yellow" />
+          </Group>
         </Radio.Group>
         <UploadWidget form={form}/>
       </Flex>

@@ -17,10 +17,10 @@ export default function Customers() {
   };
 
   const rows = customers.map((customer) => (
-    <tr key={customer._id} onClick={() => editCustomer(customer)}>
-      <td>{capitalizeFirstLetter(customer.firstName)}</td>
-      <td>{capitalizeFirstLetter(customer.lastName)}</td>
-    </tr>
+    <Table.Tr key={customer._id} onClick={() => editCustomer(customer)}>
+      <Table.Td>{capitalizeFirstLetter(customer.firstName)}</Table.Td>
+      <Table.Td>{capitalizeFirstLetter(customer.lastName)}</Table.Td>
+    </Table.Tr>
   ))
 
   return (
@@ -29,13 +29,13 @@ export default function Customers() {
       <Center>
         <Container>
           <Table highlightOnHover>
-            <thead>
-              <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-              </tr>
-            </thead>
-            <tbody>{rows}</tbody>
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>First Name</Table.Th>
+                <Table.Th>Last Name</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>{rows}</Table.Tbody>
           </Table>
         </Container>
       </Center>

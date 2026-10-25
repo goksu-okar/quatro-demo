@@ -230,9 +230,11 @@ export default function WindsurfSpecs({ form }) {
           label="Shop Flow:"
           {...form.getInputProps("priority")}
         >
-          <Radio size="sm" value="Red" label="Red" />
-          <Radio size="sm" value="Green" label="Green" />
-          <Radio size="sm" value="Yellow" label="Yellow" />
+          <Group gap="xs">
+            <Radio size="sm" value="Red" label="Red" />
+            <Radio size="sm" value="Green" label="Green" />
+            <Radio size="sm" value="Yellow" label="Yellow" />
+          </Group>
         </Radio.Group>
         <UploadWidget form={form} />
       </Flex>

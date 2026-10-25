@@ -28,29 +28,29 @@ export default function OrdersTable ({ orders, activePage }) {
   // console.log('orders: ' ,orders);
 
   const rows = orders.slice(start, end).map((o) => (
-    <tr key={o.orderId} onClick={() => {goToOrder(o)}}>
-      <td>{convertDate(o.createdAt)}</td>
-      <td>{capitalizeFirstLetter(o.customerName)}</td>
-      <td>{capitalizeFirstLetter(o.orderType)}</td>
-      <td>{o.orderId}</td>
-      <td>{o.invoiceNum}</td>
-      <td>{o.dueDate}</td>
-    </tr>
+    <Table.Tr key={o.orderId} onClick={() => {goToOrder(o)}}>
+      <Table.Td>{convertDate(o.createdAt)}</Table.Td>
+      <Table.Td>{capitalizeFirstLetter(o.customerName)}</Table.Td>
+      <Table.Td>{capitalizeFirstLetter(o.orderType)}</Table.Td>
+      <Table.Td>{o.orderId}</Table.Td>
+      <Table.Td>{o.invoiceNum}</Table.Td>
+      <Table.Td>{o.dueDate}</Table.Td>
+    </Table.Tr>
   ))
 
   return (
     <Table highlightOnHover>
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Customer Name</th>
-        <th>Order Type</th>
-        <th>Order Number</th>
-        <th>Invoice Number</th>
-        <th>Due</th>
-      </tr>
-    </thead>
-    <tbody>{rows}</tbody>
+    <Table.Thead>
+      <Table.Tr>
+        <Table.Th>Date</Table.Th>
+        <Table.Th>Customer Name</Table.Th>
+        <Table.Th>Order Type</Table.Th>
+        <Table.Th>Order Number</Table.Th>
+        <Table.Th>Invoice Number</Table.Th>
+        <Table.Th>Due</Table.Th>
+      </Table.Tr>
+    </Table.Thead>
+    <Table.Tbody>{rows}</Table.Tbody>
   </Table>
   )
 }
