@@ -9,8 +9,8 @@ import {
   Button,
   Group,
   Center,
-  Radio,
-  Flex
+  Flex,
+  Tabs
 } from '@mantine/core';
 import axios from 'axios';
 import OrdersTable from '../components/ordersTable';
@@ -60,21 +60,9 @@ export default function Orders() {
   }
 
   return (
-    <Container mt="20px">
-      <a id='orders-h-btn' href={`/`}>Home</a>
-      <Group position="apart" mt={10}>
-        <Radio.Group value={type} onChange={orderTypeChange}>
-          <Group gap="xs">
-            <Radio value="all" label="All" />
-            <Radio value="surf" label="Surf" />
-            <Radio value="windsurf" label="Windsurf" />
-            <Radio value="foil" label="Foil" />
-            <Radio value="tow" label="Tow" />
-            <Radio value="retail" label="Retail" />
-            <Radio value="team" label="Team" />
-            <Radio value="wholesale" label="Whole Sale" />
-          </Group>
-        </Radio.Group>
+    <Container size="xl" mt="20px">
+      <Group justify="space-between" mt={10}>
+        <a id='orders-h-btn' href={`/`}>Home</a>
         <Group>
           <form onSubmit={handleSearch} className='search-form'>
             <TextInput placeholder="search order" ref={searchRef} w="160px"/>
@@ -84,17 +72,33 @@ export default function Orders() {
           </form>
         </Group>
       </Group>
-      <OrdersTable orders={display} activePage={activePage} />
-      <Center>
-        <Pagination
-          page={activePage}
-          onChange={setPage}
-          total={Math.ceil(numOfPages / 30)}
-          color="gray"
-          size="sm"
-          radius="xs"
-        />
-      </Center>
+      <Flex gap="xl" align="flex-start" mt="md">
+        <Tabs value={type} onChange={orderTypeChange} orientation="vertical" color="dark">
+          <Tabs.List>
+            <Tabs.Tab value="all">All</Tabs.Tab>
+            <Tabs.Tab value="surf">Surf</Tabs.Tab>
+            <Tabs.Tab value="windsurf">Windsurf</Tabs.Tab>
+            <Tabs.Tab value="foil">Foil</Tabs.Tab>
+            <Tabs.Tab value="tow">Tow</Tabs.Tab>
+            <Tabs.Tab value="retail">Retail</Tabs.Tab>
+            <Tabs.Tab value="team">Team</Tabs.Tab>
+            <Tabs.Tab value="wholesale">Whole Sale</Tabs.Tab>
+          </Tabs.List>
+        </Tabs>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <OrdersTable orders={display} activePage={activePage} />
+          <Center mt="md">
+            <Pagination
+              page={activePage}
+              onChange={setPage}
+              total={Math.ceil(numOfPages / 30)}
+              color="gray"
+              size="sm"
+              radius="xs"
+            />
+          </Center>
+        </div>
+      </Flex>
     </Container>
   );
 }
