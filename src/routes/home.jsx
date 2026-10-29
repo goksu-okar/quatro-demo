@@ -58,7 +58,7 @@ export default function Home() {
           </Center>
           <Stack>
             <Center>
-              <Group spacing="lg">
+              <Group gap="lg">
                 <button className='voc-button' onClick={goToOrders}>View Orders</button>
                 <button className='voc-button' onClick={goToCustomers}>View Customers</button>
               </Group>

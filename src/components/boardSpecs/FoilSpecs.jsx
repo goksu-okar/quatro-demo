@@ -217,7 +217,7 @@ export default function FoilSpecs({ form }) {
         </Group>
         
       <Space h="md" />
-      <Group align="center" spacing={80}>
+      <Group align="center" gap={80}>
         <Radio.Group
           name="Leash"
           label="Leash:"

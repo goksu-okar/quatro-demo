@@ -419,7 +419,7 @@ export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer
               }
             </Stepper.Completed>
             </Stepper>
-            <Group position="right" mt="xl">
+            <Group justify="flex-end" mt="xl">
               {(active !== 0 && active < 3) && (
                 <Button color="dark" variant="default" onClick={prevStep}>
                   Back

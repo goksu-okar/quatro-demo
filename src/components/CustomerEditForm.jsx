@@ -47,7 +47,7 @@ export default function CustomerEditForm({customerValues}) {
 
   return (
     <Container pt='10px' pb='15px'>
-      <Stack spacing="lg">
+      <Stack gap="lg">
         <Center>
           <h1>Customer Form</h1>
         </Center>
@@ -98,7 +98,7 @@ export default function CustomerEditForm({customerValues}) {
           placeholder="weight in lb"
           {...form.getInputProps("weight")}
         />
-        <Group spacing="lg" position="right">
+        <Group gap="lg" justify="flex-end">
           <Button color="dark" onClick={handleSave}>
             Save
           </Button>
