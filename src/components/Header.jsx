@@ -12,7 +12,7 @@ export default function Header() {
 
   useEffect(() => {
     Axios.get('/customers').then((res) => setCustomers(res.data)).catch((err) => console.log(err));
-    Axios.get('/orders').then((res) => setOrders(res.data)).catch((err) => console.log(err));
+    Axios.get('/orders', { params: { all: true } }).then((res) => setOrders(res.data)).catch((err) => console.log(err));
   }, []);
 
   const q = query.trim().toLowerCase();

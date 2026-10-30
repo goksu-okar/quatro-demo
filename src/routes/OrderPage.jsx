@@ -6,7 +6,7 @@ import PdfTow from '../components/pdfs/PdfTow';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Container, Center, Button, Group } from '@mantine/core';
 import CurrentCustomerOrder from '../components/CurrentCustomerOrder';
-import { getLastTwoDigitsOfYear } from "../utils/helpers.js";
+import { Axios, getLastTwoDigitsOfYear } from "../utils/helpers.js";
 
 let year = getLastTwoDigitsOfYear();
 
@@ -26,6 +26,13 @@ export default function OrderPage() {
     window.print();
   }
 
+  const handleDelete = () => {
+    if (!window.confirm(`Delete order #${orderNum}? This cannot be undone.`)) return;
+    Axios.delete('/orders', { data: { _id: order._id } })
+      .then(() => navigate('/orders'))
+      .catch(() => alert('could not delete, try again'));
+  }
+
   return (
     <Center>
       {
@@ -42,6 +49,7 @@ export default function OrderPage() {
                 <Button color="dark" onClick={print}>Print/Save</Button>
                 <Button color="dark" onClick={() => navigate('/')}>Go Home</Button>
                 <Button color="dark" onClick={handleEdit}>Edit</Button>
+                <Button color="red" onClick={handleDelete}>Delete Order</Button>
               </Group>
             </Center>
           </Container>

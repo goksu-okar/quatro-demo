@@ -9,38 +9,28 @@ import {
 import OrdersTable from '../components/ordersTable';
 import { Axios } from '../utils/helpers.js';
 
+const PAGE_SIZE = 100;
+
 export default function Orders() {
 
   const [activePage, setPage] = useState(1);
-  const [type, setType] = useState("");
-  const [numOfPages, setNumOfPages] = useState(0);
+  const [type, setType] = useState("all");
+  const [totalCount, setTotalCount] = useState(0);
   const [orders, setOrders] = useState([]);
-  const [display, setDisplay] = useState([]);
 
-  // initial render gets all the orders
+  // refetches whenever the page or the type filter changes
   useEffect(() => {
-    Axios.get(`/orders`)
+    Axios.get(`/orders`, { params: { page: activePage, limit: PAGE_SIZE, type } })
     .then((res) => {
-      setType("all");
       setOrders(res.data);
-      setDisplay(res.data);
-      setNumOfPages(res.data.length);
+      setTotalCount(parseInt(res.headers['x-total-count'], 10) || 0);
     })
     .catch((err) => {console.log(err)})
-  }, [])
+  }, [activePage, type])
 
   const orderTypeChange = (v) => {
-    let types = ["surf", "windsurf", "foil", "tow", "retail", "team", "wholesale"];
-    if (types.includes(v)) {
-      let newDisplay = orders.filter((order) => (order.orderType == v || order.customerType == v));
-      setDisplay(newDisplay);
-      setNumOfPages(newDisplay.length);
-      setType(v);
-    } else {
-      setDisplay(orders);
-      setNumOfPages(orders.length);
-      setType(v);
-    }
+    setType(v);
+    setPage(1);
   }
 
   return (
@@ -59,12 +49,12 @@ export default function Orders() {
           </Tabs.List>
         </Tabs>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <OrdersTable orders={display} activePage={activePage} />
+          <OrdersTable orders={orders} />
           <Center mt="md">
             <Pagination
               page={activePage}
               onChange={setPage}
-              total={Math.ceil(numOfPages / 30)}
+              total={Math.ceil(totalCount / PAGE_SIZE)}
               color="violet"
               size="sm"
               radius="xs"
