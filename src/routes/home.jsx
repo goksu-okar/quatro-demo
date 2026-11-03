@@ -53,10 +53,7 @@ export default function Home() {
     <div className='home'>
       {customer.firstName === undefined && (
         <>
-          <Center mb="35px" >
-            <div className='title'>FORWARD MAUI</div>
-          </Center>
-          <Stack>
+          <Stack mt="120px">
             <Center>
               <Group gap="lg">
                 <button className='voc-button' onClick={goToOrders}>View Orders</button>

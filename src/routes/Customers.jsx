@@ -1,23 +1,29 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Table, Center, Container } from '@mantine/core';
-import { convertDate, capitalizeFirstLetter, Axios } from '../utils/helpers.js';
+import { Table, Center, Container, Modal } from '@mantine/core';
+import { capitalizeFirstLetter, Axios } from '../utils/helpers.js';
 import { useState, useEffect } from 'react';
-import CustomerEditForm from '../components/CustomerEditForm';
+import CustomerDetailCard from '../components/CustomerDetailCard';
 
 export default function Customers() {
   const [customers, setCustomers] = useState([]);
-  const navigate = useNavigate();
+  const [selectedCustomerId, setSelectedCustomerId] = useState(null);
+
+  const fetchCustomers = () => {
+    Axios.get('/customers').then((res) => setCustomers(res.data));
+  };
 
   useEffect(() => {
-    Axios.get('/customers').then((res) => setCustomers(res.data));
+    fetchCustomers();
   }, [])
 
-  const editCustomer = (c) => {
-    navigate('/customer/edit', {state: {customer: c}})
+  const closeModal = () => setSelectedCustomerId(null);
+
+  const handleDeleted = () => {
+    closeModal();
+    fetchCustomers();
   };
 
   const rows = customers.map((customer) => (
-    <Table.Tr key={customer._id} onClick={() => editCustomer(customer)}>
+    <Table.Tr key={customer._id} onClick={() => setSelectedCustomerId(customer._id)}>
       <Table.Td>{capitalizeFirstLetter(customer.firstName)}</Table.Td>
       <Table.Td>{capitalizeFirstLetter(customer.lastName)}</Table.Td>
     </Table.Tr>
@@ -38,6 +44,11 @@ export default function Customers() {
           </Table>
         </Container>
       </Center>
+      <Modal opened={!!selectedCustomerId} onClose={closeModal} size="lg" radius="lg" padding="xl">
+        {selectedCustomerId && (
+          <CustomerDetailCard customerId={selectedCustomerId} onClose={closeModal} onDeleted={handleDeleted} />
+        )}
+      </Modal>
     </div>
   );
 }

@@ -10,7 +10,6 @@ import {
  import Orders from "./routes/Orders";
  import OrderPage from "./routes/OrderPage";
  import Customers from "./routes/Customers";
- import CustomerPage from "./routes/CustomerPage";
 
  export default function App () {
   return (
@@ -19,12 +18,11 @@ import {
         <Router>
           <Routes>
             <Route element={<PrivateRoute />}>
-              <Route element={<Home />} path="/" exact/>
               <Route element={<AppLayout />}>
+                <Route element={<Home />} path="/" exact/>
                 <Route element={<Orders />} path="/orders" exact/>
                 <Route element={<OrderPage />} path="/order" />
                 <Route element={<Customers />} path="/customers" />
-                <Route element={<CustomerPage />} path="/customer/edit" />
               </Route>
             </Route>
             <Route element={<Login />} path="/login"/>

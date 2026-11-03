@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Popover, TextInput, Text, UnstyledButton, Stack, Divider } from '@mantine/core';
+import { Popover, TextInput, Text, UnstyledButton, Stack, Divider, Modal } from '@mantine/core';
 import { Axios, capitalizeFirstLetter } from '../utils/helpers.js';
+import CustomerDetailCard from './CustomerDetailCard';
 
 export default function Header() {
   const navigate = useNavigate();
@@ -9,9 +10,14 @@ export default function Header() {
   const [orders, setOrders] = useState([]);
   const [query, setQuery] = useState('');
   const [focused, setFocused] = useState(false);
+  const [selectedCustomerId, setSelectedCustomerId] = useState(null);
+
+  const fetchCustomers = () => {
+    Axios.get('/customers').then((res) => setCustomers(res.data)).catch((err) => console.log(err));
+  };
 
   useEffect(() => {
-    Axios.get('/customers').then((res) => setCustomers(res.data)).catch((err) => console.log(err));
+    fetchCustomers();
     Axios.get('/orders', { params: { all: true } }).then((res) => setOrders(res.data)).catch((err) => console.log(err));
   }, []);
 
@@ -30,7 +36,15 @@ export default function Header() {
 
   const goToCustomer = (customer) => {
     setQuery('');
-    navigate('/customer/edit', { state: { customer } });
+    setFocused(false);
+    setSelectedCustomerId(customer._id);
+  };
+
+  const closeCustomerModal = () => setSelectedCustomerId(null);
+
+  const handleCustomerDeleted = () => {
+    closeCustomerModal();
+    fetchCustomers();
   };
 
   const goToOrder = (order) => {
@@ -43,8 +57,9 @@ export default function Header() {
   };
 
   return (
+    <>
     <header className="app-header">
-      <a className="app-header-home" href="/">Home</a>
+      <a className="app-header-home" href="/">Forward Maui</a>
       <Popover opened={dropdownOpened} position="bottom-start" width={320} shadow="md" withinPortal>
         <Popover.Target>
           <TextInput
@@ -89,5 +104,11 @@ export default function Header() {
         </Popover.Dropdown>
       </Popover>
     </header>
+    <Modal opened={!!selectedCustomerId} onClose={closeCustomerModal} size="lg" radius="lg" padding="xl">
+      {selectedCustomerId && (
+        <CustomerDetailCard customerId={selectedCustomerId} onClose={closeCustomerModal} onDeleted={handleCustomerDeleted} />
+      )}
+    </Modal>
+    </>
   );
 }

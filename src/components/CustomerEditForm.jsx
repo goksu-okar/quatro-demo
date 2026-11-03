@@ -1,11 +1,9 @@
 import { useForm } from '@mantine/form';
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Axios } from "../utils/helpers.js";
-import {Container, Center, TextInput, Textarea, Button, Group, Stack, NumberInput, Select, Text} from '@mantine/core';
+import {TextInput, Textarea, Button, Group, Stack, NumberInput, Select, Text} from '@mantine/core';
 
-export default function CustomerEditForm({customerValues, onSaved, onCancel}) {
-  const navigate = useNavigate();
+export default function CustomerEditForm({customerValues, onSaved, onCancel, onDeleted}) {
   const [saved, setSaved] = useState(false);
 
   const form = useForm({
@@ -43,20 +41,17 @@ export default function CustomerEditForm({customerValues, onSaved, onCancel}) {
   }
 
   const handleDelete = () => {
+      if (!window.confirm('Delete this customer? This cannot be undone.')) return;
       Axios.delete('/customers', {
       data: {_id: customerValues._id}
     })
-    .then((res) => {navigate(-1)})
+    .then((res) => {onDeleted?.()})
     .catch((err) => {alert('oops could not delete')});
   }
 
 
   return (
-    <Container pt='10px' pb='15px'>
-      <Stack gap="lg">
-        <Center>
-          <h1>Customer Form</h1>
-        </Center>
+    <Stack gap="lg">
         <Group grow>
           <TextInput label="First Name:" {...form.getInputProps("firstName")} />
           <TextInput label="Last Name:" {...form.getInputProps("lastName")} />
@@ -115,15 +110,8 @@ export default function CustomerEditForm({customerValues, onSaved, onCancel}) {
             </Button>
           )}
           <Button
-            color="dark"
-            onClick={() => {
-              navigate(-1);
-            }}
-          >
-            Back
-          </Button>
-          <Button
-            color="dark"
+            color="red"
+            variant="outline"
             onClick={() => {
               handleDelete();
             }}
@@ -131,7 +119,6 @@ export default function CustomerEditForm({customerValues, onSaved, onCancel}) {
             Delete Customer
           </Button>
         </Group>
-      </Stack>
-    </Container>
+    </Stack>
   );
 }
