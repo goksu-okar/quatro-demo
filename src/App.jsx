@@ -6,7 +6,6 @@ import {
  import PrivateRoute from "./utils/PrivateRoute";
  import AppLayout from "./components/AppLayout";
  import Home from "./routes/home";
- import Login from "./routes/Login";
  import Orders from "./routes/Orders";
  import OrderPage from "./routes/OrderPage";
  import Customers from "./routes/Customers";
@@ -17,15 +16,14 @@ import {
       <div>
         <Router>
           <Routes>
-            <Route element={<PrivateRoute />}>
-              <Route element={<AppLayout />}>
-                <Route element={<Home />} path="/" exact/>
+            <Route element={<AppLayout />}>
+              <Route element={<Home />} path="/" exact/>
+              <Route element={<PrivateRoute />}>
                 <Route element={<Orders />} path="/orders" exact/>
                 <Route element={<OrderPage />} path="/order" />
                 <Route element={<Customers />} path="/customers" />
               </Route>
             </Route>
-            <Route element={<Login />} path="/login"/>
           </Routes>
         </Router>
       </div>
