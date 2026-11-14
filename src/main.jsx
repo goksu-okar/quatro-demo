@@ -2,6 +2,8 @@ import ReactDOM from "react-dom/client";
 import React from 'react';
 import App from "./App";
 import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
+import 'mantine-datatable/styles.css';
 import './App.css';
 import './fonts/Avallon.ttf';
 

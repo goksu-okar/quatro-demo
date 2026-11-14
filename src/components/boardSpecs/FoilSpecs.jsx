@@ -1,4 +1,5 @@
 import { Select, NumberInput, TextInput, Space, Group, Radio, Textarea, Title, Flex } from '@mantine/core';
+import DueDateInput from '../DueDateInput';
 import { futureDate7 } from '../../utils/helpers';
 import { useEffect } from 'react';
 import UploadWidget from '../upload/UploadWidget';
@@ -36,14 +37,7 @@ export default function FoilSpecs({ form }) {
           placeholder="type here"
           {...form.getInputProps("invoiceNum")}
         />
-        <TextInput
-          label="Due Date:"
-          placeholder="type here"
-          withAsterisk
-          // value={form.values.dueDate}
-          // onChange={(event) => form.setFieldValue('dueDate', event.currentTarget.value)}
-          {...form.getInputProps("dueDate")}
-        />
+        <DueDateInput form={form} />
       </Group>
 
       <Group>

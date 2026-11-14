@@ -1,4 +1,5 @@
 import axios from "axios";
+import dayjs from "dayjs";
 
 export function capitalizeFirstLetter(string) {
   if (string) {
@@ -40,8 +41,8 @@ export function futureDate7() {
   return date.toString().slice(4, 15);
 }
 
-export const Axios = axios.create({ baseURL: "https://frwdmauiapi.com:443" });
-// export const Axios = axios.create({ baseURL: "http://localhost:3000" });
+// the live API unless VITE_API_URL says otherwise (local dev sets it in .env.local)
+export const Axios = axios.create({ baseURL: import.meta.env.VITE_API_URL || "https://frwdmauiapi.com:443" });
 
 const TOKEN_KEY = 'authToken';
 
@@ -66,6 +67,45 @@ Axios.interceptors.request.use((config) => {
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
+
+// the backend owns the status list; fetch it once per session
+let statusesPromise = null;
+
+export function getStatuses() {
+  if (!statusesPromise) {
+    statusesPromise = Axios.get('/order-statuses')
+      .then((res) => res.data)
+      .catch((err) => {
+        statusesPromise = null; // let the next caller retry
+        throw err;
+      });
+  }
+  return statusesPromise;
+}
+
+// new orders have a picked calendar date (dueOn); older ones free text (dueDate)
+export function formatDueDate(order) {
+  if (order.dueOn) return dayjs(order.dueOn).format('MMM D, YYYY');
+  return order.dueDate || '';
+}
+
+// new orders are due 8 weeks out unless staff pick another date
+export function defaultDueOn() {
+  return dayjs().add(8, 'week').format('YYYY-MM-DD');
+}
+
+// orders from before statuses existed have none
+export function statusLabel(status) {
+  return status ? capitalizeFirstLetter(status) : 'No status';
+}
+
+// first status = not started, last = done, everything between = in progress
+export function statusColor(status, statuses) {
+  const i = statuses.indexOf(status);
+  if (i <= 0) return 'gray';
+  if (i === statuses.length - 1) return 'green';
+  return 'violet';
+}
 
 Axios.interceptors.response.use(
   (res) => res,

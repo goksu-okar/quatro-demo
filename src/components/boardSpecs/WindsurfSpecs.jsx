@@ -1,3 +1,4 @@
+import DueDateInput from '../DueDateInput';
 import {
   Select,
   NumberInput,
@@ -42,14 +43,7 @@ export default function WindsurfSpecs({ form }) {
           placeholder="type here"
           {...form.getInputProps("invoiceNum")}
         />
-        <TextInput
-          label="Due Date:"
-          placeholder="type here"
-          withAsterisk
-          // value={form.values.dueDate}
-          // onChange={(event) => form.setFieldValue('dueDate', event.currentTarget.value)}
-          {...form.getInputProps("dueDate")}
-        />
+        <DueDateInput form={form} />
       </Group>
 
       <Group>

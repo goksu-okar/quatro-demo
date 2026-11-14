@@ -25,7 +25,8 @@ import SurfSpecs from './boardSpecs/SurfSpecs.jsx';
 import FoilSpecs from './boardSpecs/FoilSpecs.jsx';
 import WindsurfSpecs from './boardSpecs/WindsurfSpecs.jsx';
 import TowSpecs from './boardSpecs/TowSpecs.jsx';
-import { Axios } from '../utils/helpers.js';
+import { Axios, defaultDueOn, getStatuses } from '../utils/helpers.js';
+import { OrderStatusSelect } from './OrderStatusBadge.jsx';
 
 
 export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer }) {
@@ -36,6 +37,11 @@ export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer
   useEffect(() => {
     form.setFieldValue('firstName', customer.firstName);
     form.setFieldValue('lastName', customer.lastName);
+    form.setFieldValue('dueOn', defaultDueOn());
+    // new orders start at the first status; staff can pick another before saving
+    getStatuses()
+      .then((statuses) => form.setFieldValue('status', statuses[0]))
+      .catch((err) => console.log(err));
   }, [])
 
   const form = useForm({
@@ -84,10 +90,12 @@ export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer
       notes: '',
       invoiceNum: '',
       dueDate: '',
+      dueOn: null,
       boardWeight: '',
       finish: '',
       image: '',
-      priority: ''
+      priority: '',
+      status: null
     },
 
     validate: (values) => {
@@ -120,7 +128,7 @@ export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer
           waveLocation: values.waveLocation === '' ? 'Location must be picked' : null,
           pads: values.pads === '' ? 'Pick pads' : null,
           boxType: values.boxType === '' ? 'Box type must be picked' : null,
-          dueDate: values.dueDate === '' ? 'Due date must be entered': null
+          dueOn: !values.dueOn && !values.dueDate ? 'Due date must be picked' : null
         }
 
         const surfValidationValues = {
@@ -325,6 +333,7 @@ export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer
                   ]}
                   {...form.getInputProps('approvedBy')}
                 />
+                <OrderStatusSelect {...form.getInputProps('status')} />
               </Stepper.Step>
 
               <Stepper.Step description='contact info'>

@@ -81,14 +81,6 @@ a {
   background-color: #f1eefc;
 }
 
-.orders-sidenav {
-  background-color: #fafafa;
-  border: 1px solid #ececec;
-  border-radius: 12px;
-  padding: 10px;
-  min-width: 170px;
-}
-
 .cc-order {
   margin-top: 10px;
 }
@@ -187,4 +179,10 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+/* screen-only UI that shouldn't end up on printed order sheets */
+@media print {
+  .no-print {
+    display: none !important;
+  }
 }
