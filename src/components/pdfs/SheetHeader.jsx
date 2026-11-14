@@ -24,9 +24,9 @@ export default function SheetHeader({ values, orderNum, customer }) {
             <div className='sheet-priority' style={{ backgroundColor: values.priority.toLowerCase() }} />
           )}
           <div className='sheet-order-info'>
-            <div><span>Order #</span> {orderNum}</div>
-            {has(values.invoiceNum) && <div><span>Invoice #</span> {values.invoiceNum}</div>}
-            <div><span>Created</span> {values.createdAt ? convertDate(values.createdAt) : createTodaysDate()}</div>
+            <div><span>Order #:</span> {orderNum}</div>
+            {has(values.invoiceNum) && <div><span>Invoice #:</span> {values.invoiceNum}</div>}
+            <div><span>Created:</span> {values.createdAt ? convertDate(values.createdAt) : createTodaysDate()}</div>
           </div>
         </div>
       </div>
@@ -34,7 +34,7 @@ export default function SheetHeader({ values, orderNum, customer }) {
         <div className='sheet-name'>{name}</div>
         {details.map(([label, value]) => (
           <div key={label} className='sheet-detail'>
-            <span>{label}</span> {value}
+            <span>{label}:</span> {value}
           </div>
         ))}
       </div>
