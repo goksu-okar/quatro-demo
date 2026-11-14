@@ -32,10 +32,10 @@ span {
 
 .outer-box {
   padding-top: 20px;
+  padding-bottom: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
   width: 800px;
 }
 
