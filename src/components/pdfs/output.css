@@ -361,9 +361,8 @@ span {
   line-height: 1.5;
 }
 
-/* name on the left, the rest pushed to the right */
 .sheet-name {
-  margin-right: auto;
+  font-size: 15px;
 }
 
 .sheet-body {

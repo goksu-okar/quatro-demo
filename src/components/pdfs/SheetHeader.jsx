@@ -1,7 +1,7 @@
 import { capitalizeFirstLetter, convertDate, createTodaysDate } from "../../utils/helpers.js";
 
 // Top of every order sheet: the board type with the order numbers beside it, then the
-// customer's name and details on one line, so the board specs get the room.
+// customer's name with their details on one line underneath.
 export default function SheetHeader({ values, orderNum, customer }) {
   const name = capitalizeFirstLetter(customer.firstName + " " + customer.lastName);
   const has = (v) => v !== undefined && v !== null && v !== '' && v !== 'na';
@@ -30,8 +30,8 @@ export default function SheetHeader({ values, orderNum, customer }) {
           </div>
         </div>
       </div>
+      <div className='sheet-name'>{name}</div>
       <div className='sheet-details'>
-        <div className='sheet-name'>{name}</div>
         {details.map(([label, value]) => (
           <div key={label} className='sheet-detail'>
             <span>{label}:</span> {value}
