@@ -1,114 +1,26 @@
-import { Avatar } from '@mantine/core';
 import './output.css';
-import { capitalizeFirstLetter, convertDate, createTodaysDate, futureDate7, formatDueDate } from "../../utils/helpers.js";
-import myAvatarPerson from '../../pictures/black-avatar.jpg'
+import SheetHeader from './SheetHeader';
+import { formatDueDate } from "../../utils/helpers.js";
 import myAvatarBoard from '../../pictures/board-black.png'
 import myAvatarPen from '../../pictures/black-pen1.png'
-import { useEffect, useState } from 'react';
-import QRCode from 'qrcode';
 //foil output
 
 export default function PdfFoil({ values, orderNum, customer }) {
 
-  let name = capitalizeFirstLetter(customer.firstName + " " + customer.lastName);
-
-  const url = `https://docs.google.com/forms/d/e/1FAIpQLSeIwTqrOx95b12xhoh4hzNCSRXaUTCTFzOGaN6FtseEyklcxg/viewform?usp=pp_url&entry.428376193=${name}&entry.1361324807=${orderNum}`;
-
-  const [src, setSrc] = useState('');
-
-  useEffect(() => {
-    QRCode.toDataURL(url).then(setSrc);
-  }, []);
 
   return (
     <>
       <div className='outer-box'>
 
-      <div className='title-box'>
-          <div style={{display: 'flex', justifyContent: 'space-between', width: '57%'}}>
-            <div className='order-type-heading'>
-              <div className='order-title'>{capitalizeFirstLetter(values.orderType)}</div>
-            </div>
-            {values.priority && <div style={{backgroundColor: values.priority.toLowerCase(), width: '125px', height: '125px', borderRadius: '50%'}}></div>}
-          </div>
-          <div className='right-box-top'>
-            {values.createdAt ? (
-              <div className='order-date'>
-                <span>Order Created</span>
-                {convertDate(values.createdAt)}
-            </div>) : (
-              <div className='order-date'>
-                <span>Order Created</span>
-                {createTodaysDate()}
-            </div> 
-            )}
-            <div>
-              <img className='qr-code' src={src}/>
-            </div>
-          </div>
-        </div>
+        <SheetHeader values={values} orderNum={orderNum} customer={customer} />
 
-        <div className='contact-box'>
-          <div className='avatar-info'>
-            <Avatar src={myAvatarPerson} size='70px'></Avatar>
-            <span>Customer Information</span>
-          </div>
-          <div className='info-in-box'>
-            {/* One */}
-            <div className='general-info'>
-              <div className='one-data'>
-                <span>Name </span>
-                {name}
-              </div>
-              <div className='one-data'>
-                <span>Phone </span>
-                {customer.phone === "na" ? <>&nbsp;</> : customer.phone}
-              </div>
-              <div className='one-data'>
-                <span>Email </span>
-                {customer.email === "na" ? <>&nbsp;</>: customer.email}
-              </div>
-            </div>
-            {/* Two */}
-            <div className='general-info'>
-              <div className='one-data'>
-                <span>Weight </span>
-                {customer.weight}
-              </div>
-              <div className='one-data'>
-                <span>Height </span>
-                {` ${customer.heightFt}' ${customer.heightIn}`}
-              </div>
-              <div className='one-data'>
-                <span>Level </span>
-                {customer.level}
-              </div>
-            </div>
-
-            {/* Three */}
-            <div className='general-info'>
-              <div className='one-data'>
-                <span>Location </span>
-                {values.waveLocation}
-              </div>
-              <div className='one-data'>
-                <span>Order #</span>
-                {orderNum}
-              </div>
-              <div className='one-data'>
-                <span>Invoice #</span>
-                {values.invoiceNum === '' ? <>&nbsp;</> : values.invoiceNum}
-              </div>
-            </div>
-
-          </div>
-
+        <div className='sheet-body'>
           <div className='board-spec-box'>
              {/* Board Heading */}
              <div className='board-avatar-info'>
               <div className='logo-info'>
-                <Avatar src={myAvatarBoard} size='70px'></Avatar>
-                <span style={{marginLeft: '-10px'}}>Board Specs</span>
+                <div className='sheet-board-icon'><img src={myAvatarBoard} alt='' /></div>
+                <span>Board Specs</span>
               </div>
               {values.image === '' ? null : <a href={values.image} target="_blank">Board Photo</a>}
             </div>
@@ -220,16 +132,10 @@ export default function PdfFoil({ values, orderNum, customer }) {
             </div>
 
             {/* Notes */}
-            <div className='notes-outer-box'>
-              <div className='notes-avatar-info'>
-                <Avatar mr={5} src={myAvatarPen} size='70px'></Avatar>
-                <span>Notes</span>
-              </div>
-
-              {/* Text Area */}
-              <div className='notes-inner-div'>
-                <div>{values.notes}</div>
-              </div>
+            <div className='sheet-notes'>
+              <img className='sheet-notes-icon' src={myAvatarPen} alt='' />
+              <span>Notes:</span>
+              <div className='sheet-notes-text'>{values.notes}</div>
             </div>
 
             <div className='rush'>

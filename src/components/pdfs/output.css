@@ -1,4 +1,15 @@
+/* order sheets print on one A4 page */
+@page {
+  size: A4;
+  margin: 10mm;
+}
+
 @media print {
+  /* the sheets are drawn 800px wide on screen; fit them to the paper instead */
+  .pdf-output { align-items: stretch !important; }
+  .outer-box, .wide-box-1, .wide-box-2, .wide-box-3, .wide-box-4 { width: 100% !important; }
+  .outer-box { height: auto; padding-top: 0; }
+
   .mantine-Stepper-steps, h1 { display: none;}
   .mantine-Group-root { display: none;}
 
@@ -147,7 +158,7 @@ span {
 
 .r-div {
   color: red;
-  font-size: 85px;
+  font-size: 56px;
   font-weight: 500;
 }
 
@@ -174,11 +185,6 @@ span {
   background-color: gainsboro;
 }
 
-.qr-code {
-  height: 100px;
-  width: 100px;
-}
-
 .right-box-top {
   display: flex;
   flex-direction: column;
@@ -189,7 +195,8 @@ span {
 
 .wide-box-1 {
   width: 800px;
-  height: 130px;
+  min-height: 90px;
+  gap: 10px;
   border: 2px solid black;
   border-radius: 5px;
   padding-top: 10px;
@@ -292,3 +299,143 @@ span {
   margin-top: 19px;
 }
 
+
+/* ---------- sheet header (shared by every order sheet) --------------- */
+
+.sheet-header {
+  width: 100%;
+  padding-bottom: 4px;
+}
+
+.sheet-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.sheet-title {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: 14px;
+  min-width: 0;
+}
+
+.sheet-title .order-title {
+  font-size: 56px;
+  font-weight: normal;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.sheet-title-name {
+  font-size: 26px;
+  margin: 0;
+}
+
+.sheet-title-side {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.sheet-priority {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.sheet-details {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 18px;
+  row-gap: 4px;
+  font-size: 15px;
+  margin-top: 4px;
+}
+
+.sheet-detail span, .sheet-order-info span {
+  margin: 0 4px 0 0;
+}
+
+.sheet-order-info {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.sheet-body {
+  width: 100%;
+}
+
+/* board icon lies flat next to "Board Specs" */
+.sheet-board-icon {
+  width: 64px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.sheet-board-icon img {
+  height: 64px;
+  transform: rotate(90deg);
+}
+
+.sheet-notes {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px 0 0 12px;
+}
+
+.sheet-notes-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.sheet-notes span {
+  margin: 0;
+  line-height: 22px;
+}
+
+.sheet-notes-text {
+  line-height: 22px;
+  white-space: pre-wrap;
+}
+
+/* spec fields read "Label: value", in two columns with a light line under each row */
+.board-spec-box .info-in-box {
+  display: block;
+  columns: 2;
+  column-gap: 40px;
+  padding: 6px 12px 0;
+}
+
+.board-spec-box .general-info {
+  margin: 0;
+}
+
+.board-spec-box .one-data {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  margin: 0;
+  padding: 5px 0;
+  border-bottom: 1px dotted #bbb;
+  break-inside: avoid;
+}
+
+.board-spec-box .one-data > span {
+  flex: 0 0 125px;
+  margin: 0;
+}
+
+.board-spec-box .one-data > span::after {
+  content: ':';
+}

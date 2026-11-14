@@ -263,7 +263,7 @@ export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer
         <a id='nc-h-btn' href={`/`}>Home</a>
         <Container mt='10px'>
             <h1>New Customer Order</h1>
-            <Stepper color="dark" size="sm" active={active} breakpoint='sm' onStepClick={(val) => changeToActive(val)}>
+            <Stepper color="dark" size="sm" active={active} classNames={{ steps: 'no-print' }} breakpoint='sm' onStepClick={(val) => changeToActive(val)}>
               <Stepper.Step description='Intro'>
                 <Radio.Group
                   name='intro'
@@ -428,7 +428,7 @@ export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer
               }
             </Stepper.Completed>
             </Stepper>
-            <Group justify="flex-end" mt="xl">
+            <Group justify="flex-end" mt="xl" className="no-print">
               {(active !== 0 && active < 3) && (
                 <Button color="dark" variant="default" onClick={prevStep}>
                   Back

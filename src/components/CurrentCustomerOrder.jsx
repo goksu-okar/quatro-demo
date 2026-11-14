@@ -247,7 +247,7 @@ export default function CurrentCustomerOrder({ customer, setCustomer, values }) 
       <a href={`/`}>Home</a>
       <Container mt='10px'>
           <h1>Current Customer Order</h1>
-          <Stepper color="dark" size="sm" active={active} breapoint='sm' onStepClick={(val) => changeToActive(val)}>
+          <Stepper color="dark" size="sm" active={active} classNames={{ steps: 'no-print' }} breapoint='sm' onStepClick={(val) => changeToActive(val)}>
             <Stepper.Step description='Intro'>
               <Radio.Group
                 name='intro'
@@ -336,7 +336,7 @@ export default function CurrentCustomerOrder({ customer, setCustomer, values }) 
             }
           </Stepper.Completed>
           </Stepper>
-          <Group justify="flex-end" mt="xl">
+          <Group justify="flex-end" mt="xl" className="no-print">
             {(active !== 0 && active < 1) && (
               <Button color="dark" variant="default" onClick={prevStep}>
                 Back

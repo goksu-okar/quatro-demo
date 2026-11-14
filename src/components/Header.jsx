@@ -67,7 +67,7 @@ export default function Header() {
 
   return (
     <>
-    <header className="app-header">
+    <header className="app-header no-print">
       <a className="app-header-home" href="/">Forward Maui</a>
       {authed && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>

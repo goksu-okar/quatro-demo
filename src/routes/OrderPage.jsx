@@ -99,7 +99,7 @@ export default function OrderPage() {
               : order.orderType === "foil" ? <PdfFoil values={order} orderNum={orderNum} customer={customer}/>
               : <PdfTow values={order} orderNum={orderNum} customer={customer} />
             }
-            <Center>
+            <Center className="no-print">
               <Group>
                 <Button color="dark" onClick={print}>Print/Save</Button>
                 <Button color="dark" onClick={() => navigate('/')}>Go Home</Button>
