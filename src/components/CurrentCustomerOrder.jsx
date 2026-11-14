@@ -20,13 +20,13 @@ import {
   Code
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { Carousel } from '@mantine/carousel';
 // import { OrderPDF } from './OrderPDF.jsx';
 import SurfSpecs from './boardSpecs/SurfSpecs.jsx';
 import FoilSpecs from './boardSpecs/FoilSpecs.jsx';
 import TowSpecs from './boardSpecs/TowSpecs.jsx';
 import WindsurfSpecs from './boardSpecs/WindsurfSpecs.jsx';
-import { Axios } from '../utils/helpers.js';
+import { Axios, defaultDueOn, getStatuses } from '../utils/helpers.js';
+import { OrderStatusSelect } from './OrderStatusBadge.jsx';
 
 export default function CurrentCustomerOrder({ customer, setCustomer, values }) {
   const [active, setActive] = useState(0);
@@ -37,6 +37,12 @@ export default function CurrentCustomerOrder({ customer, setCustomer, values }) 
   useEffect(() => {
     if (values) {
       form.setValues(values);
+    } else {
+      form.setFieldValue('dueOn', defaultDueOn());
+      // new orders start at the first status; staff can pick another before saving
+      getStatuses()
+        .then((statuses) => form.setFieldValue('status', statuses[0]))
+        .catch((err) => console.log(err));
     }
     form.setFieldValue('firstName', customer.firstName);
     form.setFieldValue('lastName', customer.lastName);
@@ -87,10 +93,12 @@ export default function CurrentCustomerOrder({ customer, setCustomer, values }) 
       notes: '',
       invoiceNum: '',
       dueDate: '',
+      dueOn: null,
       boardWeight: '',
       finish: '',
       image: '',
-      priority: ''
+      priority: '',
+      status: null
     },
 
     transformValues: (values) => ({
@@ -114,7 +122,7 @@ export default function CurrentCustomerOrder({ customer, setCustomer, values }) 
           waveLocation: values.waveLocation === '' ? 'Location must be picked' : null,
           pads: values.pads === '' ? 'Pick pads' : null,
           boxType: values.boxType === '' ? 'Box type must be picked' : null,
-          dueDate: values.dueDate === '' ? 'Due date must be entered': null
+          dueOn: !values.dueOn && !values.dueDate ? 'Due date must be picked' : null
         }
 
         const surfValidationValues = {
@@ -248,10 +256,12 @@ export default function CurrentCustomerOrder({ customer, setCustomer, values }) 
                 withAsterisk
                 {...form.getInputProps('intro')}
               >
-                <Radio size='sm' value='walk in' label='walk in'/>
-                <Radio size='sm' value='phone' label='phone'/>
-                <Radio size='sm' value='email' label='email'/>
-                <Radio size='sm' value='website' label='website'/>
+                <Group gap="xs">
+                  <Radio size='sm' value='walk in' label='walk in'/>
+                  <Radio size='sm' value='phone' label='phone'/>
+                  <Radio size='sm' value='email' label='email'/>
+                  <Radio size='sm' value='website' label='website'/>
+                </Group>
               </Radio.Group>
               <Group>
                 <TextInput
@@ -272,10 +282,12 @@ export default function CurrentCustomerOrder({ customer, setCustomer, values }) 
                 onChange={() => console.log('change')}
                 {...form.getInputProps('orderType')}
               >
-                <Radio size='sm' value='surf' label='Surf'/>
-                <Radio size='sm' value='windsurf' label='Windsurf'/>
-                <Radio size='sm' value='foil' label='Foil'/>
-                <Radio size='sm' value='tow' label='Tow'/>
+                <Group gap="xs">
+                  <Radio size='sm' value='surf' label='Surf'/>
+                  <Radio size='sm' value='windsurf' label='Windsurf'/>
+                  <Radio size='sm' value='foil' label='Foil'/>
+                  <Radio size='sm' value='tow' label='Tow'/>
+                </Group>
               </Radio.Group>
               <Radio.Group
                 name='customer type'
@@ -284,10 +296,12 @@ export default function CurrentCustomerOrder({ customer, setCustomer, values }) 
                 withAsterisk
                 {...form.getInputProps('customerType')}
               >
-                <Radio size='sm' value='retail' label='Retail'/>
-                <Radio size='sm' value='team' label='Team'/>
-                {/* <Radio size='sm' value='gratis' label='Gratis'/> */}
-                <Radio size='sm' value='wholesale' label='Wholesale'/>
+                <Group gap="xs">
+                  <Radio size='sm' value='retail' label='Retail'/>
+                  <Radio size='sm' value='team' label='Team'/>
+                  {/* <Radio size='sm' value='gratis' label='Gratis'/> */}
+                  <Radio size='sm' value='wholesale' label='Wholesale'/>
+                </Group>
               </Radio.Group>
 
               <Select
@@ -303,6 +317,7 @@ export default function CurrentCustomerOrder({ customer, setCustomer, values }) 
                 ]}
                 {...form.getInputProps('approvedBy')}
               />
+              <OrderStatusSelect {...form.getInputProps('status')} />
             </Stepper.Step>
 
             <Stepper.Step description="Board Specs">
@@ -321,7 +336,7 @@ export default function CurrentCustomerOrder({ customer, setCustomer, values }) 
             }
           </Stepper.Completed>
           </Stepper>
-          <Group position="right" mt="xl">
+          <Group justify="flex-end" mt="xl">
             {(active !== 0 && active < 1) && (
               <Button color="dark" variant="default" onClick={prevStep}>
                 Back

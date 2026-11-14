@@ -1,4 +1,5 @@
 import { Select, NumberInput, TextInput, Space, Group, Radio, Textarea, Title, Flex } from '@mantine/core';
+import DueDateInput from '../DueDateInput';
 import { futureDate7 } from '../../utils/helpers';
 import { useEffect } from 'react';
 import UploadWidget from '../upload/UploadWidget';
@@ -36,14 +37,7 @@ export default function FoilSpecs({ form }) {
           placeholder="type here"
           {...form.getInputProps("invoiceNum")}
         />
-        <TextInput
-          label="Due Date:"
-          placeholder="type here"
-          withAsterisk
-          // value={form.values.dueDate}
-          // onChange={(event) => form.setFieldValue('dueDate', event.currentTarget.value)}
-          {...form.getInputProps("dueDate")}
-        />
+        <DueDateInput form={form} />
       </Group>
 
       <Group>
@@ -217,25 +211,29 @@ export default function FoilSpecs({ form }) {
         </Group>
         
       <Space h="md" />
-      <Group align="center" spacing={80}>
+      <Group align="center" gap={80}>
         <Radio.Group
           name="Leash"
           label="Leash:"
           // orientation='vertical'
           {...form.getInputProps("leash")}
         >
-          <Radio size="sm" value="Deck" label="Deck" />
-          <Radio size="sm" value="Bottom" label="Bottom" />
-          <Radio size="sm" value="No" label="No" />
+          <Group gap="xs">
+            <Radio size="sm" value="Deck" label="Deck" />
+            <Radio size="sm" value="Bottom" label="Bottom" />
+            <Radio size="sm" value="No" label="No" />
+          </Group>
         </Radio.Group>
         <Radio.Group
           name="Handle"
           label="Handle:"
           {...form.getInputProps("handle")}
         >
-          <Radio size="sm" value="Deck" label="Deck" />
-          <Radio size="sm" value="Bottom" label="Bottom" />
-          <Radio size="sm" value="No" label="No" />
+          <Group gap="xs">
+            <Radio size="sm" value="Deck" label="Deck" />
+            <Radio size="sm" value="Bottom" label="Bottom" />
+            <Radio size="sm" value="No" label="No" />
+          </Group>
         </Radio.Group>
       </Group>
       <Flex mt={12} justify='space-between' align='center'>
@@ -244,9 +242,11 @@ export default function FoilSpecs({ form }) {
           label="Shop Flow:"
           {...form.getInputProps("priority")}
         >
-          <Radio size="sm" value="Red" label="Red" />
-          <Radio size="sm" value="Green" label="Green" />
-          <Radio size="sm" value="Yellow" label="Yellow" />
+          <Group gap="xs">
+            <Radio size="sm" value="Red" label="Red" />
+            <Radio size="sm" value="Green" label="Green" />
+            <Radio size="sm" value="Yellow" label="Yellow" />
+          </Group>
         </Radio.Group>
         <UploadWidget form={form}/>
       </Flex>

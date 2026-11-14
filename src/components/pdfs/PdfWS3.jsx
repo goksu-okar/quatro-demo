@@ -1,6 +1,6 @@
 import { Avatar, Button, Anchor } from '@mantine/core';
 import './output.css';
-import { capitalizeFirstLetter, convertDate, createTodaysDate, futureDate7 } from "../../utils/helpers.js";
+import { capitalizeFirstLetter, convertDate, createTodaysDate, futureDate7, formatDueDate } from "../../utils/helpers.js";
 import myAvatarPerson from '../../pictures/black-avatar.jpg'
 import myAvatarBoard from '../../pictures/board-black.png'
 import myAvatarPen from '../../pictures/black-pen1.png'
@@ -224,7 +224,7 @@ export default function PdfWS({ values, orderNum, customer }) {
             </div>
 
             <div className='rush'>
-              {values.dueDate === "" ? null : (<div className='r-div'>DUE {values.dueDate}</div>)}
+              {formatDueDate(values) ? (<div className='r-div'>DUE {formatDueDate(values)}</div>) : null}
             </div>
 
           </div>

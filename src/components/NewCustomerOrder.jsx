@@ -20,13 +20,13 @@ import {
   Text,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { Carousel } from '@mantine/carousel';
 // import { OrderPDF } from '../components/OrderPDF.jsx';
 import SurfSpecs from './boardSpecs/SurfSpecs.jsx';
 import FoilSpecs from './boardSpecs/FoilSpecs.jsx';
 import WindsurfSpecs from './boardSpecs/WindsurfSpecs.jsx';
 import TowSpecs from './boardSpecs/TowSpecs.jsx';
-import { Axios } from '../utils/helpers.js';
+import { Axios, defaultDueOn, getStatuses } from '../utils/helpers.js';
+import { OrderStatusSelect } from './OrderStatusBadge.jsx';
 
 
 export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer }) {
@@ -37,6 +37,11 @@ export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer
   useEffect(() => {
     form.setFieldValue('firstName', customer.firstName);
     form.setFieldValue('lastName', customer.lastName);
+    form.setFieldValue('dueOn', defaultDueOn());
+    // new orders start at the first status; staff can pick another before saving
+    getStatuses()
+      .then((statuses) => form.setFieldValue('status', statuses[0]))
+      .catch((err) => console.log(err));
   }, [])
 
   const form = useForm({
@@ -85,10 +90,12 @@ export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer
       notes: '',
       invoiceNum: '',
       dueDate: '',
+      dueOn: null,
       boardWeight: '',
       finish: '',
       image: '',
-      priority: ''
+      priority: '',
+      status: null
     },
 
     validate: (values) => {
@@ -121,7 +128,7 @@ export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer
           waveLocation: values.waveLocation === '' ? 'Location must be picked' : null,
           pads: values.pads === '' ? 'Pick pads' : null,
           boxType: values.boxType === '' ? 'Box type must be picked' : null,
-          dueDate: values.dueDate === '' ? 'Due date must be entered': null
+          dueOn: !values.dueOn && !values.dueDate ? 'Due date must be picked' : null
         }
 
         const surfValidationValues = {
@@ -265,10 +272,12 @@ export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer
                   withAsterisk
                   {...form.getInputProps('intro')}
                 >
-                  <Radio size='sm' value='walk in' label='walk in'/>
-                  <Radio size='sm' value='phone' label='phone'/>
-                  <Radio size='sm' value='email' label='email'/>
-                  <Radio size='sm' value='website' label='website'/>
+                  <Group gap="xs">
+                    <Radio size='sm' value='walk in' label='walk in'/>
+                    <Radio size='sm' value='phone' label='phone'/>
+                    <Radio size='sm' value='email' label='email'/>
+                    <Radio size='sm' value='website' label='website'/>
+                  </Group>
                 </Radio.Group>
                 <Group>
                   <TextInput 
@@ -289,10 +298,12 @@ export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer
                   onChange={() => console.log('change')}
                   {...form.getInputProps('orderType')}
                 >
-                  <Radio size='sm' value='surf' label='Surf'/>
-                  <Radio size='sm' value='windsurf' label='Windsurf'/>
-                  <Radio size='sm' value='foil' label='Foil'/>
-                  <Radio size='sm' value='tow' label='Tow'/>
+                  <Group gap="xs">
+                    <Radio size='sm' value='surf' label='Surf'/>
+                    <Radio size='sm' value='windsurf' label='Windsurf'/>
+                    <Radio size='sm' value='foil' label='Foil'/>
+                    <Radio size='sm' value='tow' label='Tow'/>
+                  </Group>
                 </Radio.Group>
                 <Radio.Group
                   name='customer type'
@@ -301,10 +312,12 @@ export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer
                   withAsterisk
                   {...form.getInputProps('customerType')}
                 >
-                  <Radio size='sm' value='retail' label='Retail'/>
-                  <Radio size='sm' value='team' label='Team'/>
-                  {/* <Radio size='sm' value='gratis' label='Gratis'/> */}
-                  <Radio size='sm' value='wholesale' label='Wholesale'/>
+                  <Group gap="xs">
+                    <Radio size='sm' value='retail' label='Retail'/>
+                    <Radio size='sm' value='team' label='Team'/>
+                    {/* <Radio size='sm' value='gratis' label='Gratis'/> */}
+                    <Radio size='sm' value='wholesale' label='Wholesale'/>
+                  </Group>
                 </Radio.Group>
 
                 <Select
@@ -320,6 +333,7 @@ export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer
                   ]}
                   {...form.getInputProps('approvedBy')}
                 />
+                <OrderStatusSelect {...form.getInputProps('status')} />
               </Stepper.Step>
 
               <Stepper.Step description='contact info'>
@@ -414,7 +428,7 @@ export default function NewCustomerOrder({ customer, newCustomer, setNewCustomer
               }
             </Stepper.Completed>
             </Stepper>
-            <Group position="right" mt="xl">
+            <Group justify="flex-end" mt="xl">
               {(active !== 0 && active < 3) && (
                 <Button color="dark" variant="default" onClick={prevStep}>
                   Back

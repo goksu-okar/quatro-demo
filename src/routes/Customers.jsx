@@ -1,44 +1,54 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Table, Center, Container } from '@mantine/core';
-import { convertDate, capitalizeFirstLetter, Axios } from '../utils/helpers.js';
+import { Table, Center, Container, Modal } from '@mantine/core';
+import { capitalizeFirstLetter, Axios } from '../utils/helpers.js';
 import { useState, useEffect } from 'react';
-import CustomerEditForm from '../components/CustomerEditForm';
+import CustomerDetailCard from '../components/CustomerDetailCard';
 
 export default function Customers() {
   const [customers, setCustomers] = useState([]);
-  const navigate = useNavigate();
+  const [selectedCustomerId, setSelectedCustomerId] = useState(null);
+
+  const fetchCustomers = () => {
+    Axios.get('/customers').then((res) => setCustomers(res.data));
+  };
 
   useEffect(() => {
-    Axios.get('/customers').then((res) => setCustomers(res.data));
+    fetchCustomers();
   }, [])
 
-  const editCustomer = (c) => {
-    navigate('/customer/edit', {state: {customer: c}})
+  const closeModal = () => setSelectedCustomerId(null);
+
+  const handleDeleted = () => {
+    closeModal();
+    fetchCustomers();
   };
 
   const rows = customers.map((customer) => (
-    <tr key={customer._id} onClick={() => editCustomer(customer)}>
-      <td>{capitalizeFirstLetter(customer.firstName)}</td>
-      <td>{capitalizeFirstLetter(customer.lastName)}</td>
-    </tr>
+    <Table.Tr key={customer._id} onClick={() => setSelectedCustomerId(customer._id)}>
+      <Table.Td>{capitalizeFirstLetter(customer.firstName)}</Table.Td>
+      <Table.Td>{capitalizeFirstLetter(customer.lastName)}</Table.Td>
+    </Table.Tr>
   ))
 
   return (
     <div className='customers-list'>
-      <a href={`/`}>Home</a>
       <Center>
         <Container>
           <Table highlightOnHover>
-            <thead>
-              <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-              </tr>
-            </thead>
-            <tbody>{rows}</tbody>
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>First Name</Table.Th>
+                <Table.Th>Last Name</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>{rows}</Table.Tbody>
           </Table>
         </Container>
       </Center>
+      <Modal opened={!!selectedCustomerId} onClose={closeModal} size="lg" radius="lg" padding="xl">
+        {selectedCustomerId && (
+          <CustomerDetailCard customerId={selectedCustomerId} onClose={closeModal} onDeleted={handleDeleted} />
+        )}
+      </Modal>
     </div>
   );
 }

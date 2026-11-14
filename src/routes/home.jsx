@@ -7,7 +7,8 @@ import CustomerListModal from '../components/CustomerListModal';
 import CheckCustomer from '../components/CheckCustomer';
 import CurrentCustomerOrder from '../components/CurrentCustomerOrder';
 import BackgroundSlider from 'react-background-slider';
-import { Axios } from '../utils/helpers.js';
+import { Axios, isAuthenticated } from '../utils/helpers.js';
+import Login from './Login';
 import d1 from '../pictures/d1.jpg'
 import d2 from '../pictures/d2.jpg'
 import d3 from '../pictures/d3.jpg'
@@ -23,11 +24,11 @@ import d12 from '../pictures/d12.jpg'
 import d13 from '../pictures/d13.jpg'
 import d14 from '../pictures/d14.jpg'
 import d16 from '../pictures/d16.jpg'
-// @ts-ignore Workaround for bug on react-background-slider 
-const Slider = BackgroundSlider['react-background-slider'].default;
 
+const Slider = BackgroundSlider.default ?? BackgroundSlider;
 
 export default function Home() {
+  const authed = isAuthenticated();
   const [customers, setCustomers] = useState([]);
   const [opened, setOpened] = useState(false);
   const [existingOpened, setExistingOpened] = useState(false);
@@ -39,8 +40,9 @@ export default function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!authed) return;
     Axios.get('/customers').then((res) => setCustomers(res.data));
-  }, [])
+  }, [authed])
 
   const goToOrders = () => {
     navigate('/orders');
@@ -50,16 +52,22 @@ export default function Home() {
     navigate('/customers', {state: {customers: customers}});
   }
 
+  if (!authed) {
+    return (
+      <div className='home'>
+        <Login />
+        <Slider images={[d3, d2, d1, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d16, ]} duration={5} transition={1} />
+      </div>
+    );
+  }
+
   return (
     <div className='home'>
       {customer.firstName === undefined && (
         <>
-          <Center mb="35px" >
-            <div className='title'>FORWARD MAUI</div>
-          </Center>
-          <Stack>
+          <Stack mt="120px">
             <Center>
-              <Group spacing="lg">
+              <Group gap="lg">
                 <button className='voc-button' onClick={goToOrders}>View Orders</button>
                 <button className='voc-button' onClick={goToCustomers}>View Customers</button>
               </Group>

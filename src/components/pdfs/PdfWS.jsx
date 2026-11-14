@@ -5,6 +5,7 @@ import {
   convertDate,
   createTodaysDate,
   futureDate7,
+  formatDueDate,
 } from "../../utils/helpers.js";
 import myAvatarPerson from "../../pictures/black-avatar.jpg";
 import myAvatarBoard from "../../pictures/board-black.png";
@@ -260,9 +261,7 @@ export default function ({ values, orderNum, customer }) {
         </div>
 
         <div className="rush">
-          {values.dueDate === "" ? null : (
-            <div className="r-div">DUE {values.dueDate}</div>
-          )}
+          {formatDueDate(values) ? (<div className='r-div'>DUE {formatDueDate(values)}</div>) : null}
         </div>
       </div>
     </>
