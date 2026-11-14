@@ -328,11 +328,6 @@ span {
   margin: 0;
 }
 
-.sheet-title-name {
-  font-size: 26px;
-  margin: 0;
-}
-
 .sheet-title-side {
   display: flex;
   align-items: center;
@@ -351,9 +346,9 @@ span {
 .sheet-details {
   display: flex;
   flex-wrap: wrap;
-  column-gap: 18px;
+  column-gap: 14px;
   row-gap: 4px;
-  font-size: 15px;
+  font-size: 14px;
   margin-top: 4px;
 }
 
@@ -364,6 +359,10 @@ span {
 .sheet-order-info {
   font-size: 15px;
   line-height: 1.5;
+}
+
+.sheet-name {
+  font-weight: bold;
 }
 
 .sheet-body {
